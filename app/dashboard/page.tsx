@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -24,13 +24,21 @@ ChartJS.register(
 );
 
 export default function Dashboard() {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState(() => {
+    const date = new Date();
+    date.setDate(date.getDate() - 7);
+    return date.toISOString().split('T')[0];
+  });
+  const [endDate, setEndDate] = useState(() => new Date().toISOString().split('T')[0]);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<DashboardData | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [categoryDetails, setCategoryDetails] = useState<any>(null);
   const [, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    handleSubmit();
+  }, []); // Run once on component mount
 
   const handleSubmit = async () => {
     if (!startDate || !endDate) {
