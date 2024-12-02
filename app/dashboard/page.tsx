@@ -12,6 +12,7 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { DashboardData, DashboardResponse } from '@/types/dashboard';
+import CategoryDetails from '../components/CategoryDetails';
 
 ChartJS.register(
   CategoryScale,
@@ -27,7 +28,8 @@ export default function Dashboard() {
   const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<DashboardData | null>(null);
-  // const [error, setError] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [categoryDetails, setCategoryDetails] = useState<any>(null);
   const [, setError] = useState<string | null>(null);
 
   const handleSubmit = async () => {
@@ -58,6 +60,38 @@ export default function Dashboard() {
     } catch (error) {
       console.error('Error fetching data:', error);
       setError(error instanceof Error ? error.message : 'Failed to fetch dashboard data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleBarClick = async (category: string) => {
+    setSelectedCategory(category);
+    setLoading(true);
+
+    try {
+      const response = await fetch('/api/dashboard/category-details', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          category,
+          startDate,
+          endDate,
+        }),
+      });
+
+      const result = await response.json();
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to fetch category details');
+      }
+
+      setCategoryDetails(result.data);
+    } catch (error) {
+      console.error('Error fetching category details:', error);
+      setError(error instanceof Error ? error.message : 'Failed to fetch category details');
     } finally {
       setLoading(false);
     }
@@ -178,11 +212,30 @@ export default function Dashboard() {
                           beginAtZero: true,
                         },
                       },
+                      onClick: (event, elements) => {
+                        if (elements && elements.length > 0) {
+                          const index = elements[0].index;
+                          const category = data.topSubjects[index].name;
+                          handleBarClick(category);
+                        }
+                      },
                     }}
                   />
                 </div>
               </div>
             </>
+          )}
+
+          {/* Category Details Modal */}
+          {selectedCategory && categoryDetails && (
+            <CategoryDetails
+              category={selectedCategory}
+              data={categoryDetails}
+              onClose={() => {
+                setSelectedCategory(null);
+                setCategoryDetails(null);
+              }}
+            />
           )}
         </div>
       </div>
