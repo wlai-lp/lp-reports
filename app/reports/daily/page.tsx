@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Line } from 'react-chartjs-2';
 import {
@@ -57,6 +57,14 @@ interface DailyReportData {
 }
 
 export default function DailyReport() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <DailyReportContent />
+    </Suspense>
+  );
+}
+
+function DailyReportContent() {
   const searchParams = useSearchParams();
   const [data, setData] = useState<DailyReportData | null>(null);
   const [loading, setLoading] = useState(false);
