@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { DashboardData, DashboardResponse, SubjectStats, DateRange } from '@/types/dashboard';
+import { DashboardData, DashboardResponse, SubjectStats, DateRange, BranchStats } from '@/types/dashboard';
 
 // Mock data generator
 function generateMockData(dateRange: DateRange): DashboardData {
@@ -11,14 +11,26 @@ function generateMockData(dateRange: DateRange): DashboardData {
     { name: 'Product Questions', count: Math.floor(Math.random() * 150) + 100, percentage: 0 },
   ];
 
+  const branches: BranchStats[] = [
+    { name: 'Main Street Branch', count: Math.floor(Math.random() * 250) + 150, percentage: 0 },
+    { name: 'Downtown Branch', count: Math.floor(Math.random() * 200) + 100, percentage: 0 },
+    { name: 'West Side Branch', count: Math.floor(Math.random() * 150) + 100, percentage: 0 },
+    { name: 'East End Branch', count: Math.floor(Math.random() * 150) + 100, percentage: 0 },
+  ];
+
   // Calculate percentages
   subjects.forEach(subject => {
     subject.percentage = Math.round((subject.count / totalConversations) * 100);
   });
 
+  branches.forEach(branch => {
+    branch.percentage = Math.round((branch.count / totalConversations) * 100);
+  });
+
   return {
     totalConversations,
     topSubjects: subjects,
+    topBranches: branches,
     dateRange,
     lastUpdated: new Date().toISOString()
   };
