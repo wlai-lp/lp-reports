@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-// import { useSearchParams } from 'next/navigation';
+import { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -57,13 +57,20 @@ interface DailyReportData {
 }
 
 export default function DailyReport() {
-  // const searchParams = useSearchParams();
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <DailyReportContent />
+    </Suspense>
+  );
+}
+
+function DailyReportContent() {
+  const searchParams = useSearchParams();
   const [data, setData] = useState<DailyReportData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // const date = searchParams.get('date') || new Date().toISOString().split('T')[0];
-  const date = new Date().toISOString().split('T')[0];
+  const date = searchParams.get('date') || new Date().toISOString().split('T')[0];
 
   useEffect(() => {
     const fetchReport = async () => {
