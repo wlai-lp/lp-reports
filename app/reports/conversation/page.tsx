@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+// import { useSearchParams } from 'next/navigation';
 
 interface ConversationDetail {
   id: string;
@@ -19,11 +19,12 @@ interface ConversationReportData {
 }
 
 export default function ConversationReport() {
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
   const [data, setData] = useState<ConversationReportData | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const date = searchParams.get('date') || new Date().toISOString().split('T')[0];
+  // const date = searchParams.get('date') || new Date().toISOString().split('T')[0];
+  const date = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
     const fetchReport = async () => {
