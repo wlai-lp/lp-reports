@@ -1,30 +1,46 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-// import { useSearchParams } from 'next/navigation';
+import { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 interface ConversationDetail {
   id: string;
   timestamp: string;
   status: 'contained' | 'not_contained' | 'escalated';
   category: string;
+  subcategory: string;
   duration: number;
   userMessages: number;
   botMessages: number;
 }
 
+interface Category {
+  name: string;
+  subcategories: string[];
+}
+
 interface ConversationReportData {
   date: string;
   conversations: ConversationDetail[];
+  categories: Category[];
 }
 
 export default function ConversationReport() {
-  // const searchParams = useSearchParams();
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ConversationReportContent />
+    </Suspense>
+  );
+}
+
+function ConversationReportContent() {
+  const searchParams = useSearchParams();
   const [data, setData] = useState<ConversationReportData | null>(null);
   const [loading, setLoading] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
 
-  // const date = searchParams.get('date') || new Date().toISOString().split('T')[0];
-  const date = new Date().toISOString().split('T')[0];
+  const date = searchParams.get('date') || new Date().toISOString().split('T')[0];
 
   useEffect(() => {
     const fetchReport = async () => {
@@ -35,7 +51,11 @@ export default function ConversationReport() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ date }),
+          body: JSON.stringify({ 
+            date,
+            category: selectedCategory || undefined,
+            subcategory: selectedSubcategory || undefined,
+          }),
         });
 
         const result = await response.json();
@@ -53,7 +73,12 @@ export default function ConversationReport() {
     };
 
     fetchReport();
-  }, [date]);
+  }, [date, selectedCategory, selectedSubcategory]);
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    setSelectedSubcategory(''); // Reset subcategory when category changes
+  };
 
   const getStatusColor = (status: ConversationDetail['status']) => {
     switch (status) {
@@ -64,6 +89,12 @@ export default function ConversationReport() {
       case 'escalated':
         return 'text-red-600 bg-red-50';
     }
+  };
+
+  const formatMinutes = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
   return (
@@ -78,6 +109,52 @@ export default function ConversationReport() {
             </div>
           </div>
 
+          {/* Filters */}
+          {data && (
+            <div className="mb-6 flex gap-4">
+              <div className="flex-1">
+                <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
+                  Category
+                </label>
+                <select
+                  id="category"
+                  value={selectedCategory}
+                  onChange={(e) => handleCategoryChange(e.target.value)}
+                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                >
+                  <option value="">All Categories</option>
+                  {data.categories.map((category) => (
+                    <option key={category.name} value={category.name}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {selectedCategory && (
+                <div className="flex-1">
+                  <label htmlFor="subcategory" className="block text-sm font-medium text-gray-700 mb-1">
+                    Subcategory
+                  </label>
+                  <select
+                    id="subcategory"
+                    value={selectedSubcategory}
+                    onChange={(e) => setSelectedSubcategory(e.target.value)}
+                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                  >
+                    <option value="">All Subcategories</option>
+                    {data.categories
+                      .find((c) => c.name === selectedCategory)
+                      ?.subcategories.map((subcategory) => (
+                        <option key={subcategory} value={subcategory}>
+                          {subcategory}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              )}
+            </div>
+          )}
+
           {loading ? (
             <div className="text-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
@@ -91,6 +168,7 @@ export default function ConversationReport() {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subcategory</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Messages</th>
                   </tr>
@@ -106,14 +184,11 @@ export default function ConversationReport() {
                           {conv.status.replace('_', ' ')}
                         </span>
                       </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{conv.category}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{conv.subcategory}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{formatMinutes(conv.duration)}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {conv.category}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {Math.round(conv.duration / 60)} min
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {conv.userMessages + conv.botMessages}
+                        {conv.userMessages + conv.botMessages} ({conv.userMessages} user, {conv.botMessages} bot)
                       </td>
                     </tr>
                   ))}
@@ -122,7 +197,7 @@ export default function ConversationReport() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <p className="text-gray-600">No conversations found for the selected date</p>
+              <p className="text-gray-500">No conversations found for this date.</p>
             </div>
           )}
         </div>
