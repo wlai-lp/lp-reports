@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -176,7 +176,7 @@ export default function BranchReport() {
                 Select Branches to Compare
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
-                {availableBranches.map((branch, index) => (
+                {availableBranches.map((branch) => (
                   <button
                     key={branch}
                     onClick={() => handleBranchChange(branch)}

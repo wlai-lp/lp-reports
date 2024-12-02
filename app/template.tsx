@@ -1,4 +1,4 @@
-import { metadata } from './metadata'
+// import { metadata } from './metadata'
 
 export default function Template({
   children,
