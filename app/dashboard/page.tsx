@@ -67,7 +67,7 @@ export default function Dashboard() {
     <div className="p-6">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white rounded-lg shadow-sm p-6">
-          <h1 className="text-2xl font-bold text-gray-900 mb-6">Reggie Dashboard</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-6">{process.env.NEXT_PUBLIC_DASHBOARD_SUBTITLE}</h1>
           
           {/* Date Range Selector */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">

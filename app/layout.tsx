@@ -34,7 +34,7 @@ export default function RootLayout({
               <div className="flex flex-col h-full">
                 {/* Logo */}
                 <div className="flex items-center justify-center h-16 border-b">
-                  <span className="text-xl font-bold text-gray-800">Lifeline</span>
+                  <span className="text-xl font-bold text-gray-800">{process.env.NEXT_PUBLIC_DASHBOARD_TITLE}</span>
                 </div>
                 
                 {/* Navigation Links */}
