@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+// import Image from 'next/image';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
@@ -27,6 +27,7 @@ export default function LoginPage() {
         setError('Invalid username or password');
       }
     } catch (err) {
+      console.error(err);
       setError('An error occurred. Please try again.');
     }
   };

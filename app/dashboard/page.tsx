@@ -27,7 +27,8 @@ export default function Dashboard() {
   const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<DashboardData | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
 
   const handleSubmit = async () => {
     if (!startDate || !endDate) {
