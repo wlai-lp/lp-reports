@@ -70,7 +70,7 @@ function DailyReportContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const date = searchParams.get('date') || new Date().toISOString().split('T')[0];
+  const date = searchParams.get('date') || new Date(Date.now() - 86400000).toISOString().split('T')[0];
 
   useEffect(() => {
     const fetchReport = async () => {
