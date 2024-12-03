@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { getAuthToken } from '@/lib/auth';
 
 // This is a mock authentication function. In a real application,
 // you would validate against a database and use proper password hashing
@@ -31,6 +32,7 @@ export async function POST(request: Request) {
     // 1. Generate a JWT token or session
     // 2. Set secure HTTP-only cookies
     // 3. Store session information
+    getAuthToken();
 
     return NextResponse.json(
       { message: 'Login successful' },

@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
 import { DashboardData, DashboardResponse, SubjectStats, DateRange, BranchStats } from '@/types/dashboard';
+import { getAuthToken } from '@/lib/auth';
 
 // Mock data generator
 function generateMockData(dateRange: DateRange): DashboardData {
+  let token = getAuthToken();
+  // console.log('token', token);
   const totalConversations = Math.floor(Math.random() * 1000) + 500;
   
   const subjects: SubjectStats[] = [
@@ -55,6 +58,7 @@ export async function POST(request: Request) {
     // For now, we'll return mock data
     const dateRange: DateRange = { startDate, endDate };
     const dashboardData = generateMockData(dateRange);
+    console.log('dashboardData', dashboardData);
 
     const response: DashboardResponse = {
       success: true,
