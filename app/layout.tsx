@@ -40,8 +40,8 @@ export default function RootLayout({
                   <nav className="flex-1 px-4 py-6 space-y-2">
                     <Link 
                       href="/dashboard" 
-                      className={`flex items-center px-4 py-2.5 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors ${
-                        pathname === '/dashboard' ? 'bg-gray-100 dark:bg-gray-800' : ''
+                      className={`flex items-center px-4 py-2.5 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors ${
+                        pathname === '/dashboard' ? 'bg-gray-100 dark:bg-gray-700 dark:text-blue-400 font-medium' : ''
                       }`}
                     >
                       <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -54,8 +54,8 @@ export default function RootLayout({
                     <div>
                       <button
                         onClick={() => setIsReportsOpen(!isReportsOpen)}
-                        className={`w-full flex items-center justify-between px-4 py-2.5 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors ${
-                          isReportActive ? 'bg-gray-100 dark:bg-gray-800' : ''
+                        className={`w-full flex items-center justify-between px-4 py-2.5 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors ${
+                          isReportActive ? 'bg-gray-100 dark:bg-gray-700 dark:text-blue-400 font-medium' : ''
                         }`}
                       >
                         <div className="flex items-center">
@@ -84,8 +84,8 @@ export default function RootLayout({
                       >
                         <Link
                           href="/reports/daily"
-                          className={`flex items-center px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors ${
-                            pathname === '/reports/daily' ? 'bg-gray-100 dark:bg-gray-800' : ''
+                          className={`flex items-center px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors ${
+                            pathname === '/reports/daily' ? 'bg-gray-100 dark:bg-gray-700 dark:text-blue-400 font-medium' : ''
                           }`}
                         >
                           <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,8 +95,8 @@ export default function RootLayout({
                         </Link>
                         <Link
                           href="/reports/conversation"
-                          className={`flex items-center px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors ${
-                            pathname === '/reports/conversation' ? 'bg-gray-100 dark:bg-gray-800' : ''
+                          className={`flex items-center px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors ${
+                            pathname === '/reports/conversation' ? 'bg-gray-100 dark:bg-gray-700 dark:text-blue-400 font-medium' : ''
                           }`}
                         >
                           <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -106,8 +106,8 @@ export default function RootLayout({
                         </Link>
                         <Link
                           href="/reports/branch"
-                          className={`flex items-center px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors ${
-                            pathname === '/reports/branch' ? 'bg-gray-100 dark:bg-gray-800' : ''
+                          className={`flex items-center px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors ${
+                            pathname === '/reports/branch' ? 'bg-gray-100 dark:bg-gray-700 dark:text-blue-400 font-medium' : ''
                           }`}
                         >
                           <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -120,8 +120,8 @@ export default function RootLayout({
                     
                     <Link 
                       href="/settings" 
-                      className={`flex items-center px-4 py-2.5 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors ${
-                        pathname === '/settings' ? 'bg-gray-100 dark:bg-gray-800' : ''
+                      className={`flex items-center px-4 py-2.5 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors ${
+                        pathname === '/settings' ? 'bg-gray-100 dark:bg-gray-700 dark:text-blue-400 font-medium' : ''
                       }`}
                     >
                       <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -141,8 +141,8 @@ export default function RootLayout({
                     
                     <Link 
                       href="/profile" 
-                      className={`flex items-center px-4 py-2.5 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors ${
-                        pathname === '/profile' ? 'bg-gray-100 dark:bg-gray-800' : ''
+                      className={`flex items-center px-4 py-2.5 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors ${
+                        pathname === '/profile' ? 'bg-gray-100 dark:bg-gray-700 dark:text-blue-400 font-medium' : ''
                       }`}
                     >
                       <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
