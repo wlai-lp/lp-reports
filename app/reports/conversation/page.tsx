@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 interface ConversationDetail {
   id: string;
@@ -35,12 +35,33 @@ export default function ConversationReport() {
 
 function ConversationReportContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [data, setData] = useState<ConversationReportData | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
 
-  const date = searchParams.get('date') || new Date().toISOString().split('T')[0];
+  const date = searchParams.get('date') || new Date().toLocaleDateString();
+
+  const handleDateChange = (direction: 'prev' | 'next') => {
+    const currentDate = new Date(date);
+    const newDate = new Date(currentDate);
+    
+    if (direction === 'prev') {
+      newDate.setDate(currentDate.getDate() - 1);
+    } else {
+      newDate.setDate(currentDate.getDate() + 1);
+    }
+
+    // Don't allow navigation to future dates
+    if (newDate > new Date()) {
+      return;
+    }
+
+    const formattedDate = newDate.toLocaleDateString();
+    router.push(`/reports/conversation?date=${formattedDate}`);
+  };
 
   useEffect(() => {
     const fetchReport = async () => {
@@ -103,9 +124,30 @@ function ConversationReportContent() {
         <div className="bg-white rounded-lg shadow-sm p-6">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-bold text-gray-900">Conversation Detail Report</h1>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Date:</span>
-              <span className="font-medium">{new Date(date).toLocaleDateString()}</span>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => handleDateChange('prev')}
+                className="p-2 text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+
+              <div className="flex items-center gap-2">              
+                <span className="text-sm text-gray-600">Date:</span>
+                <span className="font-medium">{date}</span>
+              </div>
+
+              <button
+                onClick={() => handleDateChange('next')}
+                disabled={new Date(date) >= new Date(new Date().setHours(0, 0, 0, 0))}
+                className="p-2 text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
             </div>
           </div>
 

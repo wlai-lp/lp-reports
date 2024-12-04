@@ -90,7 +90,7 @@ function DailyReportContent() {
       return;
     }
 
-    const formattedDate = newDate.toISOString().split('T')[0];
+    const formattedDate = newDate.toLocaleDateString();
     router.push(`/reports/daily?date=${formattedDate}`);
   };
 
@@ -169,10 +169,12 @@ function DailyReportContent() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600 dark:text-gray-400">Date:</span>
+
+              <div className="flex items-center gap-2">              
+                <span className="text-sm text-gray-600">Date:</span>
                 <span className="font-medium">{date}</span>
               </div>
+
               <button
                 onClick={() => handleDateChange('next')}
                 disabled={new Date(date) >= new Date(new Date().setHours(0, 0, 0, 0))}
