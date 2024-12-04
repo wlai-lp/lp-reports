@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAuthToken } from '@/lib/auth';
-import { LPCCSv2Request, LPCCSv2ResponseMock } from '@/types/lpccsv2';
+import { LPCCSv2ResponseMock } from '@/types/lpccsv2';
 
 export async function GET(request: NextRequest) {
   try {

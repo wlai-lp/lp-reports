@@ -37,10 +37,26 @@ export default function Dashboard() {
   const [, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    handleSubmit();
-  }, []); // Run once on component mount
+    const fetchInitialData = async () => {
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      
+      const initialStartDate = sevenDaysAgo.toISOString().split('T')[0];
+      const initialEndDate = new Date().toISOString().split('T')[0];
+      
+      setStartDate(initialStartDate);
+      setEndDate(initialEndDate);
+      
+      await handleSubmit({
+        startDate: initialStartDate,
+        endDate: initialEndDate
+      });
+    };
 
-  const handleSubmit = async () => {
+    fetchInitialData();
+  }, []); // Empty dependency array since fetchInitialData is defined inside useEffect
+
+  const handleSubmit = async ({ startDate, endDate }: { startDate: string; endDate: string }) => {
     if (!startDate || !endDate) {
       setError('Please select both start and end dates');
       return;
@@ -140,7 +156,7 @@ export default function Dashboard() {
             </div>
             <div className="flex items-end">
               <button
-                onClick={handleSubmit}
+                onClick={() => handleSubmit({ startDate, endDate })}
                 disabled={loading}
                 className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >

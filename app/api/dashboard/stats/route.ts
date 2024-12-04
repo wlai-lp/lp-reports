@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import { DashboardData, DashboardResponse, SubjectStats, DateRange, BranchStats } from '@/types/dashboard';
-import { getAuthToken } from '@/lib/auth';
+// import { getAuthToken } from '@/lib/auth';
 
 // Mock data generator
 function generateMockData(dateRange: DateRange): DashboardData {
-  let token = getAuthToken();
+  // let token = getAuthToken();
   // console.log('token', token);
   const totalConversations = Math.floor(Math.random() * 1000) + 500;
   
