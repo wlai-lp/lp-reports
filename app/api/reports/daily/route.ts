@@ -36,8 +36,8 @@ function generateMockDailyData(date: string) {
     avgResolutionTime: Math.floor(Math.random() * 600) + 300, // 5-15 minutes in seconds
     avgMessagesPerConversation: Math.floor(Math.random() * 6) + 4, // 4-10 messages
     peakHourLoad: Math.max(...hourlyDistribution.map(h => h.count)),
-    satisfactionScore: Math.random() * 1 + 4, // Random score between 4-5
-    firstContactResolutionRate: Math.random() * 0.3 + 0.6 // 60-90%
+    satisfactionScore: (Math.random() * 1 + 4).toFixed(2), // Random score between 4-5
+    firstContactResolutionRate: (Math.random() * 0.3 + 0.6).toFixed(2), // 60-90%
   };
 
   // Generate user engagement metrics

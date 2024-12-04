@@ -71,11 +71,13 @@ function DailyReportContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const date = searchParams.get('date') || new Date(Date.now()).toISOString().split('T')[0];
-
+  const date = searchParams.get('date') || new Date(Date.now()).toLocaleDateString();
+  console.log('date', date);
   const handleDateChange = (direction: 'prev' | 'next') => {
     const currentDate = new Date(date);
+    console.log('currentDate', currentDate);
     const newDate = new Date(currentDate);
+    console.log('newDate', newDate);
     
     if (direction === 'prev') {
       newDate.setDate(currentDate.getDate() - 1);
@@ -169,7 +171,7 @@ function DailyReportContent() {
               </button>
               <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-600 dark:text-gray-400">Date:</span>
-                <span className="font-medium">{new Date(date).toLocaleDateString()}</span>
+                <span className="font-medium">{date}</span>
               </div>
               <button
                 onClick={() => handleDateChange('next')}
